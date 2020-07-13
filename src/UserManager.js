@@ -255,7 +255,8 @@ export class UserManager extends OidcClient {
 
         return this._signin(args, this._iframeNavigator, {
             startUrl: url,
-            silentRequestTimeout: args.silentRequestTimeout || this.settings.silentRequestTimeout
+            silentRequestTimeout: args.silentRequestTimeout || this.settings.silentRequestTimeout,
+            iframeExpectedOrigin: args.iframeExpectedOrigin
         }).then(user => {
             if (user) {
                 if (user.profile && user.profile.sub) {

@@ -24,6 +24,9 @@ export class IFrameWindow {
         this._frame.style.display = "none";
         this._frame.style.width = 0;
         this._frame.style.height = 0;
+        
+        // optional - allowing custom origin
+        this._expectedOrigin = params.iframeExpectedOrigin || (location.protocol + "//" + location.host);
 
         window.document.body.appendChild(this._frame);
     }
@@ -86,7 +89,7 @@ export class IFrameWindow {
         Log.debug("IFrameWindow.message");
 
         if (this._timer &&
-            e.origin === this._origin &&
+            e.origin === this._expectedOrigin &&
             e.source === this._frame.contentWindow
         ) {
             let url = e.data;
@@ -97,10 +100,6 @@ export class IFrameWindow {
                 this._error("Invalid response from frame");
             }
         }
-    }
-
-    get _origin() {
-        return location.protocol + "//" + location.host;
     }
 
     static notifyParent(url) {
